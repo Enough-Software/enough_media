@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:enough_media/media_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

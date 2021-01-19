@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'interactive_media_widget.dart';
 import 'media_provider.dart';
-import 'dart:math' as math;
 
 /// Shows the provided media in a preview mode.
 class PreviewMediaWidget extends StatelessWidget {
