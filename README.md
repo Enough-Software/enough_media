@@ -46,7 +46,8 @@ Widget buildPreviewWithShowInteractiveDelegate(
     showInteractiveDelegate: (media) => Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => Scaffold(body: media))),
   );
-}```
+}
+```
 
 ## API Documentation
 Check out the full API documentation at https://pub.dev/documentation/enough_media/latest/
