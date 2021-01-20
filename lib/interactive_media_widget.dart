@@ -46,7 +46,11 @@ class InteractiveMediaWidget extends StatelessWidget {
     } else if (provider is TextMediaProvider) {
       return Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SelectableText(provider.text),
+        child: Material(
+          // required for Hero transition
+          type: MaterialType.transparency,
+          child: SelectableText(provider.text),
+        ),
       );
     } else {
       return Text('Unsupported content with media type ${provider.mediaType}');

@@ -90,10 +90,14 @@ class PreviewMediaWidget extends StatelessWidget {
       );
     }
     if (provider is TextMediaProvider) {
-      return Text(
-        provider.text,
-        style: TextStyle(fontSize: 8),
-        overflow: TextOverflow.ellipsis,
+      return Material(
+        // required for Hero transition
+        type: MaterialType.transparency,
+        child: Text(
+          provider.text,
+          style: TextStyle(fontSize: 8),
+          overflow: TextOverflow.ellipsis,
+        ),
       );
     }
     if (fallbackWidget != null) {
