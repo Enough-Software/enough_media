@@ -53,7 +53,7 @@ Widget buildPreviewWithShowInteractiveDelegate(
 Check out the full API documentation at https://pub.dev/documentation/enough_media/latest/
 
 
-## Installation
+## Installation and Setup
 Add this dependency your pubspec.yaml file:
 
 ```
@@ -62,6 +62,7 @@ dependencies:
 ```
 The latest version or `enough_media` is [![enough_media version](https://img.shields.io/pub/v/enough_media.svg)](https://pub.dartlang.org/packages/enough_media).
 
+For video setup please follow the instructions on https://pub.dev/packages/video_player.
 
 ## Features and bugs
 

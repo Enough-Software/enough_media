@@ -13,6 +13,8 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^18.4.34-beta
   photo_view: ^0.10.3
   flutter_sound_lite: ^7.5.1+2
+  video_player: ^1.0.1
+  path_provider: ^1.6.27
 
 
 dev_dependencies:

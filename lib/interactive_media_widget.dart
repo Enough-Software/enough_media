@@ -43,6 +43,8 @@ class InteractiveMediaWidget extends StatelessWidget {
       return PdfInteractiveMedia(mediaProvider: provider);
     } else if (mediaProvider.isAudio) {
       return AudioInteractiveMedia(mediaProvider: provider);
+    } else if (mediaProvider.isVideo) {
+      return VideoInteractiveMedia(mediaProvider: provider);
     } else if (provider is TextMediaProvider) {
       return Padding(
         padding: const EdgeInsets.all(16.0),
