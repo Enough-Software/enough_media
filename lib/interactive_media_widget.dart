@@ -55,7 +55,15 @@ class InteractiveMediaWidget extends StatelessWidget {
         ),
       );
     } else {
-      return Text('Unsupported content with media type ${provider.mediaType}');
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Material(
+          // required for Hero transition
+          type: MaterialType.transparency,
+          child: SelectableText('${provider.name}:\n'
+              'Unsupported content with mime type ${provider.mediaType}'),
+        ),
+      );
     }
   }
 }
