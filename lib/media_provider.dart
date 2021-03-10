@@ -8,10 +8,10 @@ class MediaProvider {
   final String mediaType;
 
   /// The size in bytes, if known
-  final int size;
+  final int? size;
 
   /// Description, can be useful when sharing this media
-  final String description;
+  final String? description;
 
   /// Creates a new media provider with the given [name], [mediaType] like application/pdf, [size] in bytes and [description].
   MediaProvider(this.name, this.mediaType, this.size, {this.description});
@@ -46,7 +46,7 @@ class UrlMediaProvider extends MediaProvider {
   /// Creates a new URL media provider with the given [name], [mediaType] and [url].
   /// Optionally specify the [size] in bytes and the [description].
   UrlMediaProvider(String name, String mediaType, this.url,
-      {int size, String description})
+      {int? size, String? description})
       : super(name, mediaType, size, description: description);
 }
 
@@ -58,7 +58,7 @@ class MemoryMediaProvider extends MediaProvider {
   /// Creates a new meemory media provider with the given [name], [mediaType] and [data].
   /// Optionally specify the [description].
   MemoryMediaProvider(String name, String mediaType, this.data,
-      {String description})
+      {String? description})
       : super(name, mediaType, data.length, description: description);
 }
 
@@ -70,13 +70,13 @@ class AssetMediaProvider extends MediaProvider {
   /// Creates a new asset media provider with the given [name], [mediaType] and [assetName].
   /// Optionally specify the [size] in bytes and the [description].
   AssetMediaProvider(String name, String mediaType, this.assetName,
-      {String description})
+      {String? description})
       : super(name, mediaType, null, description: description);
 }
 
 class TextMediaProvider extends MediaProvider {
   final String text;
   TextMediaProvider(String name, String mediaType, this.text,
-      {String description})
+      {String? description})
       : super(name, mediaType, null, description: description);
 }

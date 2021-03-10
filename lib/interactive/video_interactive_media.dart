@@ -8,16 +8,17 @@ import '../media_provider.dart';
 
 class VideoInteractiveMedia extends StatefulWidget {
   final MediaProvider mediaProvider;
-  VideoInteractiveMedia({Key key, this.mediaProvider}) : super(key: key);
+  VideoInteractiveMedia({Key? key, required this.mediaProvider})
+      : super(key: key);
 
   @override
   _VideoInteractiveMediaState createState() => _VideoInteractiveMediaState();
 }
 
 class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
-  VideoPlayerController _videoController;
-  ChewieController _chewieController;
-  Future<VideoPlayerController> _loader;
+  late VideoPlayerController _videoController;
+  late ChewieController _chewieController;
+  late Future<VideoPlayerController> _loader;
 
   @override
   void initState() {
@@ -26,10 +27,8 @@ class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
   }
 
   void dispose() {
-    if (_videoController != null) {
-      _videoController.dispose();
-      _chewieController.dispose();
-    }
+    _videoController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
@@ -81,12 +80,9 @@ class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
           case ConnectionState.waiting:
           case ConnectionState.active:
             return Center(child: CircularProgressIndicator());
-            break;
           case ConnectionState.done:
             return buildVideo();
-            break;
         }
-        return Text('loading video...');
       },
     );
   }

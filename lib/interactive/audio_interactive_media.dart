@@ -7,8 +7,8 @@ import '../media_provider.dart';
 class AudioInteractiveMedia extends StatefulWidget {
   final MediaProvider mediaProvider;
   AudioInteractiveMedia({
-    Key key,
-    @required this.mediaProvider,
+    Key? key,
+    required this.mediaProvider,
   }) : super(key: key);
 
   @override
@@ -16,14 +16,13 @@ class AudioInteractiveMedia extends StatefulWidget {
 }
 
 class _AudioInteractiveMediaState extends State<AudioInteractiveMedia> {
-  String name;
-  FlutterSoundPlayer audioPlayer;
-  Track track;
+  late String name;
+  late Track track;
 
   @override
   void initState() {
     final provider = widget.mediaProvider;
-    name = provider.name ?? '<unknown>';
+    name = provider.name;
     if (provider is MemoryMediaProvider) {
       track = Track(dataBuffer: provider.data, trackTitle: name);
     } else if (provider is UrlMediaProvider) {

@@ -17,32 +17,32 @@ class PreviewMediaWidget extends StatefulWidget {
   final bool useRegistry;
 
   /// The width of the preview media
-  final double width;
+  final double? width;
 
   /// The height of the preview media
-  final double height;
+  final double? height;
 
   /// Optional delegate to switch to (typically fullscreen) interactive mode
-  final Future Function(InteractiveMediaWidget) showInteractiveDelegate;
+  final Future Function(InteractiveMediaWidget)? showInteractiveDelegate;
 
   /// Optional fallback widget that is shown when an unsupported media is encountered
-  final Widget fallbackWidget;
+  final Widget? fallbackWidget;
 
   /// Optional list of context menu entries.
   ///
   /// When the `showInteractiveDelegate` is defined, then the context menu is shown after a long press.
   /// When the `showInteractiveDelegate` is not defined, then the context menu is shown after a press.
   /// Note that additionally the onContextMenuSelected delegate needs to be specified
-  final List<PopupMenuEntry> contextMenuEntries;
+  final List<PopupMenuEntry>? contextMenuEntries;
 
   /// Handler for context menu
-  final Function(MediaProvider mediaProvider, dynamic entry)
+  final Function(MediaProvider mediaProvider, dynamic entry)?
       onContextMenuSelected;
 
   /// Creates a new media preview
   PreviewMediaWidget({
-    Key key,
-    @required this.mediaProvider,
+    Key? key,
+    required this.mediaProvider,
     this.width,
     this.height,
     this.showInteractiveDelegate,
@@ -75,7 +75,7 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
 
   Widget _buildInteractiveDelegateButton() {
     void Function() onPressed;
-    void Function() onLongPressed;
+    void Function()? onLongPressed;
     if (widget.showInteractiveDelegate != null) {
       onPressed = _showInteractiveDelegate;
       if (this.widget.contextMenuEntries?.isNotEmpty ?? false) {
@@ -103,23 +103,23 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
       useRegistry: widget.useRegistry,
       heroTag: widget.mediaProvider,
     );
-    widget.showInteractiveDelegate(interactive);
+    widget.showInteractiveDelegate!(interactive);
   }
 
   void _showContextMenu() async {
     final selectedValue = await showMenu(
-      items: widget.contextMenuEntries,
+      items: widget.contextMenuEntries!,
       context: context,
       position: _getPosition((widget.width ?? 60) / 2),
     );
     if (selectedValue != null && widget.onContextMenuSelected != null) {
-      widget.onContextMenuSelected(widget.mediaProvider, selectedValue);
+      widget.onContextMenuSelected!(widget.mediaProvider, selectedValue);
     }
   }
 
-  RelativeRect _getPosition(double shift) {
+  RelativeRect _getPosition(double? shift) {
     shift ??= 60;
-    final rb = context.findRenderObject() as RenderBox;
+    final rb = context.findRenderObject() as RenderBox?;
     final offset = rb?.localToGlobal(Offset.zero);
     double left = (offset?.dx ?? 120) + shift;
     double top = (offset?.dy ?? 120) + shift;
@@ -153,7 +153,7 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
       );
     }
     if (widget.fallbackWidget != null) {
-      return widget.fallbackWidget;
+      return widget.fallbackWidget!;
     }
     return Container(
       width: widget.width,
@@ -162,12 +162,12 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
     );
   }
 
-  Widget resolveFromRegistry() {
+  Widget? resolveFromRegistry() {
     final registry = WidgetRegistry();
     final provider = widget.mediaProvider;
     if (registry.resolvePreview != null) {
       final resolved =
-          registry.resolvePreview(provider, widget.width, widget.height);
+          registry.resolvePreview!(provider, widget.width, widget.height);
       if (resolved != null) {
         return resolved;
       }

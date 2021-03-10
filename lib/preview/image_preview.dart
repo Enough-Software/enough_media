@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class ImagePreview extends StatelessWidget {
   final MediaProvider mediaProvider;
   final BoxFit fit;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   const ImagePreview(
-      {Key key,
-      @required this.mediaProvider,
+      {Key? key,
+      required this.mediaProvider,
       this.fit = BoxFit.cover,
       this.width,
       this.height})

@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 class InteractiveMediaWidget extends StatelessWidget {
   final MediaProvider mediaProvider;
   final bool useRegistry;
-  final Object heroTag;
+  final Object? heroTag;
   const InteractiveMediaWidget({
-    Key key,
-    @required this.mediaProvider,
+    Key? key,
+    required this.mediaProvider,
     this.useRegistry = false,
     this.heroTag,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class InteractiveMediaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (heroTag != null) {
-      return Hero(tag: heroTag, child: _buildMedia());
+      return Hero(tag: heroTag!, child: _buildMedia());
     }
     return _buildMedia();
   }
@@ -27,7 +27,7 @@ class InteractiveMediaWidget extends StatelessWidget {
     if (useRegistry) {
       final registry = WidgetRegistry();
       if (registry.resolveInteractive != null) {
-        final resolved = registry.resolveInteractive(provider);
+        final resolved = registry.resolveInteractive!(provider);
         if (resolved != null) {
           return resolved;
         }

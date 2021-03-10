@@ -9,6 +9,6 @@ export 'preview/all_preview.dart';
 export 'widget_registry.dart';
 
 export 'package:flutter_sound_lite/flutter_sound.dart';
-export 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+export 'package:native_pdf_view/native_pdf_view.dart';
 export 'package:video_player/video_player.dart';
 export 'package:chewie/chewie.dart';

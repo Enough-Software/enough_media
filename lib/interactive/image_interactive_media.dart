@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view.dart';
 /// Displays zoomable images
 class ImageInteractiveMedia extends StatelessWidget {
   final MediaProvider mediaProvider;
-  const ImageInteractiveMedia({Key key, @required this.mediaProvider})
+  const ImageInteractiveMedia({Key? key, required this.mediaProvider})
       : super(key: key);
 
   @override
