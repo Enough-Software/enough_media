@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:chewie/chewie.dart';
+import 'package:enough_media/util/file_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:path_provider/path_provider.dart' as pp;
 import '../media_provider.dart';
 
 class VideoInteractiveMedia extends StatefulWidget {
@@ -23,7 +21,7 @@ class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
   @override
   void initState() {
     super.initState();
-    _loader = loadVideo();
+    _loader = _loadVideo();
   }
 
   void dispose() {
@@ -32,13 +30,11 @@ class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
     super.dispose();
   }
 
-  Future<VideoPlayerController> loadVideo() async {
+  Future<VideoPlayerController> _loadVideo() async {
     final provider = widget.mediaProvider;
     if (provider is MemoryMediaProvider) {
       // first save the video to a file and then play it from there:
-      final directory = await pp.getTemporaryDirectory();
-      final file = File('${directory.path}/${provider.name}');
-      await file.writeAsBytes(provider.data, flush: true);
+      final file = await FileHelper.saveAsFile(provider);
       _videoController = VideoPlayerController.file(file);
     } else if (provider is UrlMediaProvider) {
       _videoController = VideoPlayerController.network(provider.url);
@@ -81,13 +77,13 @@ class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
           case ConnectionState.active:
             return Center(child: CircularProgressIndicator());
           case ConnectionState.done:
-            return buildVideo();
+            return _buildVideo();
         }
       },
     );
   }
 
-  Widget buildVideo() {
+  Widget _buildVideo() {
     return Container(
       color: Colors.black,
       child: Center(
