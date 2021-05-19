@@ -1,4 +1,4 @@
-import 'package:enough_media/preview/all_preview.dart';
+import 'package:enough_media/preview/preview.dart';
 import 'package:enough_media/widget_registry.dart';
 import 'package:flutter/material.dart';
 
@@ -145,10 +145,23 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
       return Material(
         // required for Hero transition
         type: MaterialType.transparency,
-        child: Text(
-          provider.text,
-          style: TextStyle(fontSize: 8),
-          overflow: TextOverflow.ellipsis,
+        child: Container(
+          width: widget.width,
+          height: widget.height,
+          child: Column(
+            children: [
+              Text(
+                provider.name,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              Text(
+                provider.text,
+                style: TextStyle(fontSize: 8),
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       );
     }

@@ -36,6 +36,9 @@ class MediaProvider {
 
   /// Checks if this is a font
   bool get isFont => mediaType.startsWith('font/');
+
+  /// Checks if this is a message
+  bool get isMessage => mediaType.startsWith('message/');
 }
 
 /// Media provider for remote media files
