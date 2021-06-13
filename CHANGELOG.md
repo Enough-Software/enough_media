@@ -1,3 +1,10 @@
+## [2.0.0] - 2021-06-13
+* Restructured package
+* Use `chewie_audio` instead of `flutter_sound_lite` package for better iOS support
+* Use `CupertinoContextMenu` on iOS and MacOS when there are context menu items registered on a `PreviewMediaWidget`
+* Use `fallbackBuilder` instead of `fallbackWidget` for better performance in the `PreviewMediaWidget` and `InteractiveMediaWidget`
+* Removed `WidgetRegistry` as the fallback builders are a better way to control fallback generation
+
 ## [1.0.0] - 2021-03-10
 * Support null-safefty
 * Use open source [native_pdf_view](https://pub.dev/packages/native_pdf_view) package instead of commercial package

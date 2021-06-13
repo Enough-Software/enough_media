@@ -8,7 +8,7 @@ export 'src/preview_media_widget.dart';
 export 'src/preview/preview.dart';
 
 export 'package:native_pdf_view/native_pdf_view.dart';
-export 'package:video_player/video_player.dart';
+// export 'package:video_player/video_player.dart';
 export 'package:chewie/chewie.dart';
 export 'package:chewie_audio/chewie_audio.dart'
     show ChewieAudio, ChewieAudioController;
