@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'interactive_media_widget.dart';
 import 'media_provider.dart';
-import 'widget_registry.dart';
 
 /// Shows the provided media in a preview mode.
 class PreviewMediaWidget extends StatefulWidget {
@@ -12,9 +11,6 @@ class PreviewMediaWidget extends StatefulWidget {
 
   /// Should a hero animation be used - this defaults to `true` when the `showInteractiveDelegate` is specified.
   final bool useHeroAnimation;
-
-  /// Specifies if the registry should be used, defaults to `false` so there is no registry lookup
-  final bool useRegistry;
 
   /// The width of the preview media
   final double? width;
@@ -25,8 +21,13 @@ class PreviewMediaWidget extends StatefulWidget {
   /// Optional delegate to switch to (typically fullscreen) interactive mode
   final Future Function(InteractiveMediaWidget)? showInteractiveDelegate;
 
-  /// Optional fallback widget that is shown when an unsupported media is encountered
-  final Widget? fallbackWidget;
+  /// Optional fallback builder that is invoked when an unsupported media is encountered
+  final Widget Function(BuildContext context, MediaProvider mediaProvider)?
+      fallbackBuilder;
+
+  /// Optional fallback builder that is invoked when an unsupported media is encountered
+  final Widget Function(BuildContext context, MediaProvider mediaProvider)?
+      interactiveFallbackBuilder;
 
   /// Optional list of context menu entries.
   ///
@@ -39,7 +40,14 @@ class PreviewMediaWidget extends StatefulWidget {
   final Function(MediaProvider mediaProvider, dynamic entry)?
       onContextMenuSelected;
 
-  /// Creates a new media preview
+  /// Creates a new media preview for the specified [mediaProvider].
+  ///
+  /// Optionally specify the desired [width] and [height] of the preview widget.
+  /// Define the [showInteractiveDelegate] callback to navigate to the interactive media widget when the preview is tapped.
+  /// Set [useHeroAnimation] to `false` when no hero animation should be shown when going from preview to interactive mode.
+  /// Set [useRegistry] to `true` when the [WidgetRegistry] should be used for looking up matching widgets.
+  /// Define a [fallbackBuilder] to generate a preview widget when the media type in the [mediaProvider] is not directly supported.
+  /// Define [contextMenuEntries] and a [onContextMenuSelected] callback to enable context menu items.
   PreviewMediaWidget({
     Key? key,
     required this.mediaProvider,
@@ -47,8 +55,8 @@ class PreviewMediaWidget extends StatefulWidget {
     this.height,
     this.showInteractiveDelegate,
     this.useHeroAnimation = true,
-    this.useRegistry = false,
-    this.fallbackWidget,
+    this.fallbackBuilder,
+    this.interactiveFallbackBuilder,
     this.contextMenuEntries,
     this.onContextMenuSelected,
   }) : super(key: key);
@@ -100,8 +108,8 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
   void _showInteractiveDelegate() {
     final interactive = InteractiveMediaWidget(
       mediaProvider: widget.mediaProvider,
-      useRegistry: widget.useRegistry,
       heroTag: widget.mediaProvider,
+      fallbackBuilder: widget.interactiveFallbackBuilder,
     );
     widget.showInteractiveDelegate!(interactive);
   }
@@ -128,12 +136,6 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
 
   Widget _buildPreview() {
     final provider = widget.mediaProvider;
-    if (widget.useRegistry) {
-      final registryWidget = resolveFromRegistry();
-      if (registryWidget != null) {
-        return registryWidget;
-      }
-    }
     if (provider.isImage) {
       return ImagePreview(
         mediaProvider: provider,
@@ -165,30 +167,14 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
         ),
       );
     }
-    if (widget.fallbackWidget != null) {
-      return widget.fallbackWidget!;
+    final builder = widget.fallbackBuilder;
+    if (builder != null) {
+      return builder(context, widget.mediaProvider);
     }
     return Container(
       width: widget.width,
       height: widget.height,
       child: Text(widget.mediaProvider.name),
     );
-  }
-
-  Widget? resolveFromRegistry() {
-    final registry = WidgetRegistry();
-    final provider = widget.mediaProvider;
-    if (registry.resolvePreview != null) {
-      final resolved =
-          registry.resolvePreview!(provider, widget.width, widget.height);
-      if (resolved != null) {
-        return resolved;
-      }
-    }
-    final mimeTypeResolver = registry.previewRegistry[provider.mediaType];
-    if (mimeTypeResolver != null) {
-      return mimeTypeResolver(provider, widget.width, widget.height);
-    }
-    return null;
   }
 }
