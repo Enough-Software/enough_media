@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:enough_media/src/preview/preview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'interactive_media_widget.dart';
 import 'media_provider.dart';
 
 /// Shows the provided media in a preview mode.
-class PreviewMediaWidget extends StatefulWidget {
+class PreviewMediaWidget extends StatelessWidget {
   /// The media source
   final MediaProvider mediaProvider;
 
@@ -62,71 +65,91 @@ class PreviewMediaWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PreviewMediaWidgetState createState() => _PreviewMediaWidgetState();
-}
-
-class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
-  @override
   Widget build(BuildContext context) {
-    if (widget.showInteractiveDelegate != null ||
-        (this.widget.contextMenuEntries?.isNotEmpty ?? false)) {
-      if (widget.useHeroAnimation) {
+    if (showInteractiveDelegate != null ||
+        (contextMenuEntries?.isNotEmpty ?? false)) {
+      if (useHeroAnimation) {
         return Hero(
-          tag: widget.mediaProvider,
-          child: _buildInteractiveDelegateButton(),
+          tag: mediaProvider,
+          child: _buildInteractiveDelegateButton(context),
         );
       }
-      return _buildInteractiveDelegateButton();
+      return _buildInteractiveDelegateButton(context);
     }
-    return _buildPreview();
+    return _buildPreview(context);
   }
 
-  Widget _buildInteractiveDelegateButton() {
+  Widget _buildInteractiveDelegateButton(BuildContext context) {
+    if (Platform.isIOS || Platform.isMacOS) {
+      return _buildCupertinoButton(context);
+    }
     void Function() onPressed;
     void Function()? onLongPressed;
-    if (widget.showInteractiveDelegate != null) {
+    if (showInteractiveDelegate != null) {
       onPressed = _showInteractiveDelegate;
-      if (this.widget.contextMenuEntries?.isNotEmpty ?? false) {
-        onLongPressed = _showContextMenu;
+      if (contextMenuEntries?.isNotEmpty ?? false) {
+        onLongPressed = () => _showContextMenu(context);
       }
     } else {
-      onPressed = _showContextMenu;
+      onPressed = () => _showContextMenu(context);
     }
-    return ButtonTheme(
+    return MaterialButton(
+      onPressed: onPressed,
       padding: EdgeInsets.zero,
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      minWidth: 0, //wraps child's width
-      height: 0, //wraps child's height
-      child: MaterialButton(
-        onPressed: onPressed,
-        onLongPress: onLongPressed,
-        child: _buildPreview(),
-      ),
+      onLongPress: onLongPressed,
+      child: _buildPreview(context),
+    );
+  }
+
+  Widget _buildCupertinoButton(BuildContext context) {
+    final menuEntries = contextMenuEntries;
+    final callback = onContextMenuSelected;
+    if (menuEntries != null && menuEntries.isNotEmpty && callback != null) {
+      final cupertinoActions = menuEntries
+          .whereType<PopupMenuItem>()
+          .map((e) => CupertinoContextMenuAction(
+                child: e.child!,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  callback(mediaProvider, e);
+                },
+              ))
+          .toList();
+      return CupertinoContextMenu(
+        actions: cupertinoActions,
+        child: CupertinoButton(
+          child: _buildPreview(context),
+          onPressed: _showInteractiveDelegate,
+        ),
+      );
+    }
+    return CupertinoButton(
+      child: _buildPreview(context),
+      onPressed: _showInteractiveDelegate,
     );
   }
 
   void _showInteractiveDelegate() {
     final interactive = InteractiveMediaWidget(
-      mediaProvider: widget.mediaProvider,
-      heroTag: widget.mediaProvider,
-      fallbackBuilder: widget.interactiveFallbackBuilder,
+      mediaProvider: mediaProvider,
+      heroTag: mediaProvider,
+      fallbackBuilder: interactiveFallbackBuilder,
     );
-    widget.showInteractiveDelegate!(interactive);
+    showInteractiveDelegate!(interactive);
   }
 
-  void _showContextMenu() async {
+  void _showContextMenu(BuildContext context) async {
     final selectedValue = await showMenu(
-      items: widget.contextMenuEntries!,
+      items: contextMenuEntries!,
       context: context,
-      position: _getPosition((widget.width ?? 60) / 2),
+      position: _getPosition((width ?? 60) / 2, context),
     );
-    if (selectedValue != null && widget.onContextMenuSelected != null) {
-      widget.onContextMenuSelected!(widget.mediaProvider, selectedValue);
+    if (selectedValue != null && onContextMenuSelected != null) {
+      onContextMenuSelected!(mediaProvider, selectedValue);
     }
   }
 
-  RelativeRect _getPosition(double? shift) {
-    shift ??= 60;
+  RelativeRect _getPosition(double shift, BuildContext context) {
     final rb = context.findRenderObject() as RenderBox?;
     final offset = rb?.localToGlobal(Offset.zero);
     double left = (offset?.dx ?? 120) + shift;
@@ -134,13 +157,13 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
     return RelativeRect.fromLTRB(left, top, left + 60, top + 60);
   }
 
-  Widget _buildPreview() {
-    final provider = widget.mediaProvider;
+  Widget _buildPreview(BuildContext context) {
+    final provider = mediaProvider;
     if (provider.isImage) {
       return ImagePreview(
         mediaProvider: provider,
-        width: widget.width,
-        height: widget.height,
+        width: width,
+        height: height,
       );
     }
     if (provider is TextMediaProvider) {
@@ -148,8 +171,8 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
         // required for Hero transition
         type: MaterialType.transparency,
         child: Container(
-          width: widget.width,
-          height: widget.height,
+          width: width,
+          height: height,
           child: Column(
             children: [
               Text(
@@ -167,14 +190,14 @@ class _PreviewMediaWidgetState extends State<PreviewMediaWidget> {
         ),
       );
     }
-    final builder = widget.fallbackBuilder;
+    final builder = fallbackBuilder;
     if (builder != null) {
-      return builder(context, widget.mediaProvider);
+      return builder(context, mediaProvider);
     }
     return Container(
-      width: widget.width,
-      height: widget.height,
-      child: Text(widget.mediaProvider.name),
+      width: width,
+      height: height,
+      child: Text(mediaProvider.name),
     );
   }
 }
