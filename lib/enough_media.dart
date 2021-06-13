@@ -1,12 +1,12 @@
 /// An opinionated but extensible collection of media widgets
 library enough_media;
 
-export 'media_provider.dart';
-export 'interactive_media_widget.dart';
-export 'interactive/interactive.dart';
-export 'preview_media_widget.dart';
-export 'preview/preview.dart';
-export 'widget_registry.dart';
+export 'src/media_provider.dart';
+export 'src/interactive_media_widget.dart';
+export 'src/interactive/interactive.dart';
+export 'src/preview_media_widget.dart';
+export 'src/preview/preview.dart';
+export 'src/widget_registry.dart';
 
 export 'package:native_pdf_view/native_pdf_view.dart';
 export 'package:video_player/video_player.dart';

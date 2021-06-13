@@ -1,9 +1,9 @@
-import 'package:enough_media/preview/preview.dart';
-import 'package:enough_media/widget_registry.dart';
+import 'package:enough_media/src/preview/preview.dart';
 import 'package:flutter/material.dart';
 
 import 'interactive_media_widget.dart';
 import 'media_provider.dart';
+import 'widget_registry.dart';
 
 /// Shows the provided media in a preview mode.
 class PreviewMediaWidget extends StatefulWidget {

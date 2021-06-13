@@ -1,9 +1,8 @@
 import 'package:chewie_audio/chewie_audio.dart';
-import 'package:enough_media/util/file_helper.dart';
+import 'package:enough_media/src/util/file_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../enough_media.dart';
 import '../media_provider.dart';
 
 /// Displays simple audio player

@@ -1,5 +1,4 @@
 import 'package:enough_media/enough_media.dart';
-import 'package:enough_media/media_provider.dart';
 import 'package:flutter/widgets.dart';
 
 class WidgetRegistry {

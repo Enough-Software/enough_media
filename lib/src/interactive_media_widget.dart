@@ -1,6 +1,4 @@
 import 'package:enough_media/enough_media.dart';
-import 'package:enough_media/media_provider.dart';
-import 'package:enough_media/widget_registry.dart';
 import 'package:flutter/material.dart';
 
 class InteractiveMediaWidget extends StatelessWidget {

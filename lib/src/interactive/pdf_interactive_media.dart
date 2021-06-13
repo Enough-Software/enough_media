@@ -1,6 +1,7 @@
-import 'package:enough_media/media_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
+
+import '../media_provider.dart';
 
 /// Displays PDFs
 class PdfInteractiveMedia extends StatefulWidget {

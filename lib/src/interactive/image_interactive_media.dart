@@ -1,6 +1,7 @@
-import 'package:enough_media/media_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+
+import '../media_provider.dart';
 
 /// Displays zoomable images
 class ImageInteractiveMedia extends StatelessWidget {
