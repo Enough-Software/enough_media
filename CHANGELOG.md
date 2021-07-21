@@ -1,3 +1,7 @@
+## [2.1.0] - 2021-07-21
+* Use builder function instead of prebuild fallback widgets
+* `MediaProviders` can now be converted for easier consumption
+
 ## [2.0.0] - 2021-06-13
 * Restructured package
 * Use `chewie_audio` instead of `flutter_sound_lite` package for better iOS support
