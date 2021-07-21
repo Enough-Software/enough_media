@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
-class MediaProvider {
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:enough_media/src/util/http_helper.dart';
+
+abstract class MediaProvider {
   /// The name of this media
   final String name;
 
@@ -39,6 +43,16 @@ class MediaProvider {
 
   /// Checks if this is a message
   bool get isMessage => mediaType.startsWith('message/');
+
+  /// Converts this provider to a [TextMediaProvider], note that the [mediaType] will stay the same
+  ///
+  /// Throws a [StateError] when the conversion fails.
+  Future<TextMediaProvider> toTextProvider();
+
+  /// Converts this provider to a [MemoryMediaProvider], note that the [mediaType] will stay the same
+  ///
+  /// Throws a [StateError] when the conversion fails.
+  Future<MemoryMediaProvider> toMemoryProvider();
 }
 
 /// Media provider for remote media files
@@ -51,6 +65,22 @@ class UrlMediaProvider extends MediaProvider {
   UrlMediaProvider(String name, String mediaType, this.url,
       {int? size, String? description})
       : super(name, mediaType, size, description: description);
+
+  @override
+  Future<TextMediaProvider> toTextProvider() {
+    return toMemoryProvider().then((p) => p.toTextProvider());
+  }
+
+  @override
+  Future<MemoryMediaProvider> toMemoryProvider() async {
+    final result = await HttpHelper.httpGet(url);
+    if (result.data != null) {
+      return MemoryMediaProvider(name, mediaType, result.data!,
+          description: description);
+    }
+    throw StateError(
+        'Unable to download $url, got status code ${result.statusCode}');
+  }
 }
 
 /// Provides preloaded media
@@ -63,6 +93,18 @@ class MemoryMediaProvider extends MediaProvider {
   MemoryMediaProvider(String name, String mediaType, this.data,
       {String? description})
       : super(name, mediaType, data.length, description: description);
+
+  @override
+  Future<TextMediaProvider> toTextProvider() {
+    final text = utf8.decode(data, allowMalformed: true);
+    return Future.value(
+        TextMediaProvider(name, mediaType, text, description: description));
+  }
+
+  @override
+  Future<MemoryMediaProvider> toMemoryProvider() {
+    return Future.value(this);
+  }
 }
 
 /// Provides assets as media
@@ -75,6 +117,22 @@ class AssetMediaProvider extends MediaProvider {
   AssetMediaProvider(String name, String mediaType, this.assetName,
       {String? description})
       : super(name, mediaType, null, description: description);
+
+  @override
+  Future<TextMediaProvider> toTextProvider() async {
+    String text = await rootBundle.loadString(assetName);
+    return TextMediaProvider(name, mediaType, text, description: description);
+  }
+
+  @override
+  Future<MemoryMediaProvider> toMemoryProvider() async {
+    final data = await rootBundle.load(assetName);
+    final buffer = data.buffer;
+    final uint8ListData =
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    return MemoryMediaProvider(name, mediaType, uint8ListData,
+        description: description);
+  }
 }
 
 class TextMediaProvider extends MediaProvider {
@@ -82,4 +140,17 @@ class TextMediaProvider extends MediaProvider {
   TextMediaProvider(String name, String mediaType, this.text,
       {String? description})
       : super(name, mediaType, null, description: description);
+
+  @override
+  Future<TextMediaProvider> toTextProvider() {
+    return Future.value(this);
+  }
+
+  @override
+  Future<MemoryMediaProvider> toMemoryProvider() {
+    final data = utf8.encode(text);
+    final uint8ListData = data is Uint8List ? data : Uint8List.fromList(data);
+    return Future.value(MemoryMediaProvider(name, mediaType, uint8ListData,
+        description: description));
+  }
 }

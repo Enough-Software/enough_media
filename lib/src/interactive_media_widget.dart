@@ -5,17 +5,33 @@ import 'package:flutter/material.dart';
 class InteractiveMediaWidget extends StatelessWidget {
   /// The provider for the media to be shown
   final MediaProvider mediaProvider;
+
+  /// The hero tag for animating between preview and interactive, for example.
   final Object? heroTag;
+
+  /// The builder for creating the concrete interactive widget for the given [mediaProvider].
+  ///
+  /// When this function returns null, the default interactive widgets will be build.
+  /// When no default interactive widget is associated, the Widget created by the [fallbackBuilder] will be used.
+  /// When no [fallbackBuilder] is defined, then a default fallback is generated.
+  final Widget? Function(BuildContext context, MediaProvider mediaProvider)?
+      builder;
+
+  /// The builder for creating the fallback interactive widget for the given [mediaProvider].
+  ///
+  /// This is used when neither the [builder] nor the default registrations generated a widget.
   final Widget Function(BuildContext context, MediaProvider mediaProvider)?
       fallbackBuilder;
 
   /// Creates a new interactive widget for the given [mediaProvider].
   ///
   /// Define the [heroTag] to enable hero animations.
+  /// Define the [builder] to potentielly create better fitting interactive widgets for the given [mediaProvider].
   /// Defined a [fallbackBuilder] to generate an interactive media when the given media is not supported.
   const InteractiveMediaWidget({
     Key? key,
     required this.mediaProvider,
+    this.builder,
     this.fallbackBuilder,
     this.heroTag,
   }) : super(key: key);
@@ -31,6 +47,13 @@ class InteractiveMediaWidget extends StatelessWidget {
 
   Widget _buildMedia(BuildContext context) {
     final provider = mediaProvider;
+    final callback = builder;
+    if (callback != null) {
+      final widget = callback(context, provider);
+      if (widget != null) {
+        return widget;
+      }
+    }
     if (provider.isImage) {
       return ImageInteractiveMedia(mediaProvider: provider);
     } else if (mediaProvider.mediaType == 'application/pdf') {

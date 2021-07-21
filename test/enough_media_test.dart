@@ -4,10 +4,12 @@ import 'package:enough_media/enough_media.dart';
 
 void main() {
   test('media info', () {
-    assert(MediaProvider('image.jpg', 'image/jpeg', null).isImage, true);
-    assert(MediaProvider('music', 'audio/mp3', null).isAudio, true);
-    assert(MediaProvider('video', 'video/mp4', null).isVideo, true);
-    assert(MediaProvider('json', 'application/json', null).isApplication, true);
-    assert(MediaProvider('pdf', 'application/pdf', null).isApplication, true);
+    assert(TextMediaProvider('image.jpg', 'image/jpeg', 'text').isImage, true);
+    assert(TextMediaProvider('music', 'audio/mp3', 'text').isAudio, true);
+    assert(TextMediaProvider('video', 'video/mp4', 'text').isVideo, true);
+    assert(TextMediaProvider('json', 'application/json', 'text').isApplication,
+        true);
+    assert(TextMediaProvider('pdf', 'application/pdf', 'text').isApplication,
+        true);
   });
 }

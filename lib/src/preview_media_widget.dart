@@ -24,11 +24,19 @@ class PreviewMediaWidget extends StatelessWidget {
   /// Optional delegate to switch to (typically fullscreen) interactive mode
   final Future Function(InteractiveMediaWidget)? showInteractiveDelegate;
 
+  /// Optional builder to create a dedicated preview widget before a default one is generated.
+  final Widget? Function(BuildContext context, MediaProvider mediaProvider)?
+      builder;
+
   /// Optional fallback builder that is invoked when an unsupported media is encountered
   final Widget Function(BuildContext context, MediaProvider mediaProvider)?
       fallbackBuilder;
 
-  /// Optional fallback builder that is invoked when an unsupported media is encountered
+  /// Optional builder for creating the interactive widget.
+  final Widget? Function(BuildContext context, MediaProvider mediaProvider)?
+      interactiveBuilder;
+
+  /// Optional fallback builder that is invoked when an unsupported media is encountered when creating the interactive widget.
   final Widget Function(BuildContext context, MediaProvider mediaProvider)?
       interactiveFallbackBuilder;
 
@@ -58,7 +66,9 @@ class PreviewMediaWidget extends StatelessWidget {
     this.height,
     this.showInteractiveDelegate,
     this.useHeroAnimation = true,
+    this.builder,
     this.fallbackBuilder,
+    this.interactiveBuilder,
     this.interactiveFallbackBuilder,
     this.contextMenuEntries,
     this.onContextMenuSelected,
@@ -133,6 +143,7 @@ class PreviewMediaWidget extends StatelessWidget {
     final interactive = InteractiveMediaWidget(
       mediaProvider: mediaProvider,
       heroTag: mediaProvider,
+      builder: interactiveBuilder,
       fallbackBuilder: interactiveFallbackBuilder,
     );
     showInteractiveDelegate!(interactive);
@@ -159,6 +170,13 @@ class PreviewMediaWidget extends StatelessWidget {
 
   Widget _buildPreview(BuildContext context) {
     final provider = mediaProvider;
+    final callback = builder;
+    if (callback != null) {
+      final preview = callback(context, provider);
+      if (preview != null) {
+        return preview;
+      }
+    }
     if (provider.isImage) {
       return ImagePreview(
         mediaProvider: provider,
@@ -190,9 +208,9 @@ class PreviewMediaWidget extends StatelessWidget {
         ),
       );
     }
-    final builder = fallbackBuilder;
-    if (builder != null) {
-      return builder(context, mediaProvider);
+    final fallback = fallbackBuilder;
+    if (fallback != null) {
+      return fallback(context, mediaProvider);
     }
     return Container(
       width: width,
