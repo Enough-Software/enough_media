@@ -1,3 +1,7 @@
+## [2.2.0] - 2022-05-18
+* Use pdfx instead of package:native_pdf_view package
+* Ensure compatibility with Flutter 3.0
+
 ## [2.1.0] - 2021-07-21
 * Use builder function instead of prebuild fallback widgets
 * `MediaProviders` can now be converted for easier consumption

@@ -58,7 +58,7 @@ Add this dependency your pubspec.yaml file:
 
 ```
 dependencies:
-  enough_media: ^2.1.0
+  enough_media: ^2.2.0
 ```
 The latest version or `enough_media` is [![enough_media version](https://img.shields.io/pub/v/enough_media.svg)](https://pub.dartlang.org/packages/enough_media).
 
