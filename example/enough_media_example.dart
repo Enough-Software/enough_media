@@ -11,7 +11,7 @@ Widget buildPreview(String name, String mimeType, Uint8List data) {
   );
 }
 
-/// Provide interactive media, typically for near-fullscreen experiences:
+/// Provide interactive media, typically for near-full-screen experiences:
 Widget buildInteractive(String name, String mimeType, Uint8List data) {
   final mediaProvider = MemoryMediaProvider(name, mimeType, data);
   return InteractiveMediaWidget(
@@ -25,7 +25,10 @@ Widget buildPreviewWithShowInteractiveDelegate(
   final mediaProvider = MemoryMediaProvider(name, mimeType, data);
   return PreviewMediaWidget(
     mediaProvider: mediaProvider,
-    showInteractiveDelegate: (media) => Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => Scaffold(body: media))),
+    showInteractiveDelegate: (media) => Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(body: media),
+      ),
+    ),
   );
 }

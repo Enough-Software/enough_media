@@ -1,3 +1,6 @@
+## [2.2.1] - 2023-10-05
+* Update dependencies
+
 ## [2.2.0] - 2022-05-18
 * Use pdfx instead of package:native_pdf_view package
 * Ensure compatibility with Flutter 3.0
