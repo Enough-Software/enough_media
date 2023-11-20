@@ -1,3 +1,8 @@
+## [2.2.2] - 2023-11-20
+* Fix hero animation problem when useHeroAnimation is set to false
+* Update dependencies
+* Improve code style
+
 ## [2.2.1] - 2023-10-05
 * Update dependencies
 

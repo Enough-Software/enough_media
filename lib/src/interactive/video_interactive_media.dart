@@ -2,6 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:enough_media/src/util/file_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+
 import '../media_provider.dart';
 
 class VideoInteractiveMedia extends StatefulWidget {
@@ -37,7 +38,9 @@ class _VideoInteractiveMediaState extends State<VideoInteractiveMedia> {
       final file = await FileHelper.saveAsFile(provider);
       _videoController = VideoPlayerController.file(file);
     } else if (provider is UrlMediaProvider) {
-      _videoController = VideoPlayerController.network(provider.url);
+      _videoController = VideoPlayerController.networkUrl(
+        Uri.parse(provider.url),
+      );
     } else if (provider is AssetMediaProvider) {
       _videoController = VideoPlayerController.asset(provider.assetName);
     } else {
