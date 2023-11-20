@@ -4,7 +4,6 @@ version: 2.2.2
 homepage: https://github.com/enough-software/enough_media
 topics:
  - media
- - viewer
  - pdf
  - photo
  - video
