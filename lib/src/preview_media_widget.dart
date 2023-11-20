@@ -12,7 +12,8 @@ class PreviewMediaWidget extends StatelessWidget {
   /// The media source
   final MediaProvider mediaProvider;
 
-  /// Should a hero animation be used - this defaults to `true` when the `showInteractiveDelegate` is specified.
+  /// Should a hero animation be used - this defaults to `true` when the
+  /// [showInteractiveDelegate] is specified.
   final bool useHeroAnimation;
 
   /// The width of the preview media
@@ -21,14 +22,16 @@ class PreviewMediaWidget extends StatelessWidget {
   /// The height of the preview media
   final double? height;
 
-  /// Optional delegate to switch to (typically fullscreen) interactive mode
+  /// Optional delegate to switch to (typically full-screen) interactive mode
   final Future Function(InteractiveMediaWidget)? showInteractiveDelegate;
 
-  /// Optional builder to create a dedicated preview widget before a default one is generated.
+  /// Optional builder to create a dedicated preview widget before a
+  /// default one is generated.
   final Widget? Function(BuildContext context, MediaProvider mediaProvider)?
       builder;
 
-  /// Optional fallback builder that is invoked when an unsupported media is encountered
+  /// Optional fallback builder that is invoked when an unsupported media is
+  /// encountered
   final Widget Function(BuildContext context, MediaProvider mediaProvider)?
       fallbackBuilder;
 
@@ -36,15 +39,21 @@ class PreviewMediaWidget extends StatelessWidget {
   final Widget? Function(BuildContext context, MediaProvider mediaProvider)?
       interactiveBuilder;
 
-  /// Optional fallback builder that is invoked when an unsupported media is encountered when creating the interactive widget.
+  /// Optional fallback builder that is invoked when an unsupported media is
+  /// encountered when creating the interactive widget.
   final Widget Function(BuildContext context, MediaProvider mediaProvider)?
       interactiveFallbackBuilder;
 
   /// Optional list of context menu entries.
   ///
-  /// When the `showInteractiveDelegate` is defined, then the context menu is shown after a long press.
-  /// When the `showInteractiveDelegate` is not defined, then the context menu is shown after a press.
-  /// Note that additionally the onContextMenuSelected delegate needs to be specified
+  /// When the [showInteractiveDelegate] is defined, then the context menu
+  /// is shown after a long press.
+  ///
+  /// When the [showInteractiveDelegate] is not defined, then the
+  /// context menu is shown after a press.
+  ///
+  /// Note that additionally the [onContextMenuSelected] delegate
+  /// needs to be specified
   final List<PopupMenuEntry>? contextMenuEntries;
 
   /// Handler for context menu
@@ -54,11 +63,18 @@ class PreviewMediaWidget extends StatelessWidget {
   /// Creates a new media preview for the specified [mediaProvider].
   ///
   /// Optionally specify the desired [width] and [height] of the preview widget.
-  /// Define the [showInteractiveDelegate] callback to navigate to the interactive media widget when the preview is tapped.
-  /// Set [useHeroAnimation] to `false` when no hero animation should be shown when going from preview to interactive mode.
-  /// Set [useRegistry] to `true` when the [WidgetRegistry] should be used for looking up matching widgets.
-  /// Define a [fallbackBuilder] to generate a preview widget when the media type in the [mediaProvider] is not directly supported.
-  /// Define [contextMenuEntries] and a [onContextMenuSelected] callback to enable context menu items.
+  ///
+  /// Define the [showInteractiveDelegate] callback to navigate to the
+  /// interactive media widget when the preview is tapped.
+  ///
+  /// Set [useHeroAnimation] to `false` when no hero animation should be shown
+  /// when going from preview to interactive mode.
+  ///
+  /// Define a [fallbackBuilder] to generate a preview widget when the media
+  /// type in the [mediaProvider] is not directly supported.
+  ///
+  /// Define [contextMenuEntries] and a [onContextMenuSelected]
+  /// callback to enable context menu items.
   PreviewMediaWidget({
     Key? key,
     required this.mediaProvider,
@@ -142,11 +158,11 @@ class PreviewMediaWidget extends StatelessWidget {
   void _showInteractiveDelegate() {
     final interactive = InteractiveMediaWidget(
       mediaProvider: mediaProvider,
-      heroTag: mediaProvider,
+      heroTag: useHeroAnimation ? mediaProvider : null,
       builder: interactiveBuilder,
       fallbackBuilder: interactiveFallbackBuilder,
     );
-    showInteractiveDelegate!(interactive);
+    showInteractiveDelegate?.call(interactive);
   }
 
   void _showContextMenu(BuildContext context) async {
@@ -195,7 +211,7 @@ class PreviewMediaWidget extends StatelessWidget {
             children: [
               Text(
                 provider.name,
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               Text(
                 provider.text,
