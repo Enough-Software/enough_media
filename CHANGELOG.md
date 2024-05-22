@@ -1,3 +1,6 @@
+## [2.3.1] - 2024-05-22
+* Ensure compatibility with Flutter 3.22
+
 ## [2.3.0] - 2024-05-22
 * Update dependencies
 

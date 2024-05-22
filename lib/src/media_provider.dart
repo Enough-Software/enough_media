@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:enough_media/src/util/http_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 /// Defines a media provider

@@ -1,6 +1,6 @@
 name: enough_media
 description: Extensible collection of media viewers for preview and interactive experiences.
-version: 2.3.0
+version: 2.3.1
 homepage: https://github.com/enough-software/enough_media
 topics:
  - media
