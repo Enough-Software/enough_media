@@ -1,3 +1,6 @@
+## [2.3.0] - 2024-05-22
+* Update dependencies
+
 ## [2.2.1] - 2023-10-05
 * Update dependencies
 

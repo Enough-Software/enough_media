@@ -195,7 +195,7 @@ class PreviewMediaWidget extends StatelessWidget {
             children: [
               Text(
                 provider.name,
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               Text(
                 provider.text,

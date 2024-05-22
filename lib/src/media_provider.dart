@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:enough_media/src/util/http_helper.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 abstract class MediaProvider {
   /// The name of this media
@@ -149,6 +149,7 @@ class TextMediaProvider extends MediaProvider {
   @override
   Future<MemoryMediaProvider> toMemoryProvider() {
     final data = utf8.encode(text);
+    // ignore: unnecessary_type_check
     final uint8ListData = data is Uint8List ? data : Uint8List.fromList(data);
     return Future.value(MemoryMediaProvider(name, mediaType, uint8ListData,
         description: description));
