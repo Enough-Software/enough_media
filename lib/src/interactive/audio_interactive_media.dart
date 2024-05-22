@@ -42,7 +42,9 @@ class _AudioInteractiveMediaState extends State<AudioInteractiveMedia> {
       final file = await FileHelper.saveAsFile(provider);
       _videoController = VideoPlayerController.file(file);
     } else if (provider is UrlMediaProvider) {
-      _videoController = VideoPlayerController.network(provider.url);
+      _videoController = VideoPlayerController.networkUrl(
+        Uri.parse(provider.url),
+      );
     } else if (provider is AssetMediaProvider) {
       _videoController = VideoPlayerController.asset(provider.assetName);
     } else {
