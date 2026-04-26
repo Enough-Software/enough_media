@@ -206,14 +206,12 @@ class TextMediaProvider extends MediaProvider {
   @override
   Future<MemoryMediaProvider> toMemoryProvider() {
     final data = utf8.encode(text);
-    // ignore: unnecessary_type_check
-    final uint8ListData = data is Uint8List ? data : Uint8List.fromList(data);
 
     return Future.value(
       MemoryMediaProvider(
         name,
         mediaType,
-        uint8ListData,
+        data,
         description: description,
       ),
     );
